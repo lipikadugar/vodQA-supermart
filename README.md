@@ -12,7 +12,7 @@ npm install -g truffle
 truffle version
 ```
 #### Download Ganache
-http://truffleframework.com/ganache
+* http://truffleframework.com/ganache
 * Double click the icon to launch the application.This will generate a blockchain running locally on port 7545. 
 #### Compile the Solidity code
 ```
