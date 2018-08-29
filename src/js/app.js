@@ -2,13 +2,13 @@ App = {
   web3Provider: null,
   contracts: {},
 
-  init: function() {
+  init() {
     // Load items.
     $.getJSON('../super_mart.json', function(data) {
       var itemsRow = $('#itemsRow');
       var itemTemplate = $('#itemTemplate');
 
-      for (i = 0; i < data.length; i ++) {
+      for (i = 0; i < data.length; i++) {
         itemTemplate.find('.panel-title').text(data[i].name);
         itemTemplate.find('img').attr('src', data[i].picture);
         itemTemplate.find('.item-rating').text(data[i].rating);
@@ -23,7 +23,7 @@ App = {
     return App.initWeb3();
   },
 
-  initWeb3: function() {
+  initWeb3() {
     // Is there an injected web3 instance?
     if (typeof web3 !== 'undefined') {
       App.web3Provider = web3.currentProvider;
@@ -35,7 +35,7 @@ App = {
     return App.initContract();
   },
 
-  initContract: function() {
+  initContract() {
     $.getJSON('Purchase.json', function(data) {
       // Get the necessary contract artifact file and instantiate it with truffle-contract
       var PurchaseArtifact = data;
@@ -48,15 +48,14 @@ App = {
       return App.markPurchased();
     });
 
-
     return App.bindEvents();
   },
 
-  bindEvents: function() {
+  bindEvents() {
     $(document).on('click', '.btn-buy', App.handlePurchase);
   },
 
-  markPurchased: function(buyers, account) {
+  markPurchased(buyers, account) {
     var purchaseInstance;
 
     App.contracts.Purchase.deployed().then(function(instance) {
@@ -74,31 +73,31 @@ App = {
     });
   },
 
-  handlePurchase: function(event) {
+  handlePurchase(event) {
     event.preventDefault();
 
     var itemId = parseInt($(event.target).data('id'));
-var purchaseInstance;
+    var purchaseInstance;
 
-web3.eth.getAccounts(function(error, accounts) {
-  if (error) {
-    console.log(error);
-  }
+    web3.eth.getAccounts(function(error, accounts) {
+      if (error) {
+        console.log(error);
+      }
 
-  var account = accounts[0];
+      var account = accounts[0];
 
-  App.contracts.Purchase.deployed().then(function(instance) {
-    purchaseInstance = instance;
+      App.contracts.Purchase.deployed().then(function(instance) {
+        purchaseInstance = instance;
 
-    // Execute purchase as a transaction by sending account
-    return purchaseInstance.buy(itemId, {from: account});
-  }).then(function(result) {
-    return App.markPurchased();
-  }).catch(function(err) {
-    console.log(err.message);
-  });
-});
-  }
+        // Execute purchase as a transaction by sending account
+        return purchaseInstance.buy(itemId, {from: account});
+      }).then(function(result) {
+        return App.markPurchased();
+      }).catch(function(err) {
+        console.log(err.message);
+      });
+    });
+  },
 
 };
 
