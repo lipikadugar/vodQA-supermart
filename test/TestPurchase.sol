@@ -32,7 +32,7 @@ contract TestPurchase {
         address expected = this;
 
         // Store buyers in memory rather than contract's storage
-        address[16] memory buyers = purchase.getBuyers();
+        address[99] memory buyers = purchase.getBuyers();
 
         Assert.equal(buyers[8], expected, "Owner of item ID 8 should be recorded.");
     }
